@@ -60,33 +60,41 @@ Token* tokenize(const char* str) {
 	// Get element count
 	size_t count = strlen(str);
 	
-	// Create buffer array to store words
-	char* word = NULL;
-	size_t word_size = 0;
-
 	// Loop through alphanumeric elements
 	for (size_t i = 0; i < count; i++) {
+		// Create buffer array to store words
+		char* word = NULL;
+		size_t word_size = 0;
+
 		char c = str[i];
+		int has_run = 0;
 		while (isalnum(c)) {
 			add_char(&c, &word, &word_size);
 			add_num(&c, &word, &word_size);
 			i++;
 			c = str[i];
+			has_run = 1;
+		}
+
+		// Check if index needs to decrement
+		if (has_run == 1) {
+			i--;
 		}
 
 		// Check if string matches token
-		if (strcmp(word, "return") == 0) {
+		if (word && strcmp(word, "return") == 0) {
 			Token token = token_create(_ret, "return");
 			add_token(token, &tokens, &token_count);
 			free(word);
-		} else if (isdigit(word[0])) {
+			continue;
+		} else if (word && isdigit(word[0])) { // TODO: Loop to verify whole word isdigit
 			Token token = token_create(_int, word);
 			add_token(token, &tokens, &token_count);
 			free(word);
 		} else if (c == ';') {
 			Token token = token_create(_semi, ";");
 			add_token(token, &tokens, &token_count);
-		} else if (isspace(str[i - 1])) {
+		} else if (isspace(c)) {
 			continue;
 		} else {
 			fprintf(stderr, "Invalid Token Error: %s", word);
