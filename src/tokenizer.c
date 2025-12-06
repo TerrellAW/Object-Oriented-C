@@ -86,7 +86,7 @@ Token* tokenize(const char* str) {
 		} else if (c == ';') {
 			Token token = token_create(_semi, ";");
 			add_token(token, &tokens, &token_count);
-		} else if (isspace(c)) {
+		} else if (isspace(str[i - 1])) {
 			continue;
 		} else {
 			fprintf(stderr, "Invalid Token Error: %s", word);
