@@ -1,14 +1,19 @@
+// Include Guard, prevents compilation errors
+#ifndef TOKENIZER_H
+#define TOKENIZER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 /**
  * @brief Enumerates the valid token types for the Token struct.
  */
 enum TokenType {
-	_return,
-	int_lit,
-	semic
+	_ret, 	// return
+	_int, 	// int
+	_semi 	// ;
 };
 
 /**
@@ -24,3 +29,4 @@ typedef struct {
  */
 Token* tokenize(const char* str);
 
+#endif // Closes TOKENIZER_H include guard

@@ -1,3 +1,7 @@
+// Include Guard, prevents compilation errors
+#ifndef INPUT_H
+#define INPUT_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,3 +18,5 @@
  * @return Character array (string) if successful, NULL if it failed.
  */
 char* read_input(const char* filename, long* file_size);
+
+#endif // Closes INPUT_H include guard
