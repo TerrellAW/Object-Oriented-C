@@ -79,6 +79,7 @@ Token* tokenize(const char* str) {
 		// Check if index needs to decrement
 		if (has_run == 1) {
 			i--;
+			c = str[i];
 		}
 
 		// Check if string matches token
