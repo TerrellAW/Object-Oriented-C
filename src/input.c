@@ -31,7 +31,7 @@ char* read_input(const char* filename, long* file_size) {
 	}
 
 	// Verify memory size
-	size_t result = fread(buffer, 1, lSize, in); // Read lSize elements
+	long result = fread(buffer, 1, lSize, in); // Read lSize elements
 	if (result != lSize) {
 		fclose(in);
 		free(buffer);
