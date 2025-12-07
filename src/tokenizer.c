@@ -37,7 +37,8 @@ Token* tokenize(char* str) {
 	// Loop until peak returns null terminator
 	while(peak(&stack) != '\0') {
 		// Create buffer array to store words
-		char* word = NULL;
+		size_t word_cap = 16;
+		char* word = safe_malloc(word_cap);
 		size_t word_size = 0;
 		
 		// Peak current character
@@ -50,18 +51,23 @@ Token* tokenize(char* str) {
 				// Consume char
 				char curr_c = consume(&stack);
 
+				// Only increase capacity if it would be exceeded
+				if (word_size + 1 >= word_cap) {
+					word_cap *= 2; // double capacity of word
+					word = safe_realloc(word, word_cap);
+				}
+
 				// Add to word buffer
-				size_t new_size = (word_size + 1) * sizeof(char);
-				word = safe_realloc(word, new_size);
 				word[word_size++] = curr_c;
 			}
 
-			// Terminate the word string
+			// Ensure word is not empty
 			if (word_size > 0) {
+				// Shrink to exact size + null terminator
 				word = safe_realloc(word, word_size + 1);
 				word[word_size] = '\0';
-			} else {
-				continue; // just in case
+			} else { // Safeguard just in case
+				continue;
 			}
 
 			// Generate hash code
