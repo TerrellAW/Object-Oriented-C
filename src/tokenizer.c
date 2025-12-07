@@ -94,6 +94,11 @@ Token* tokenize(const char* str) {
 			add_token(token, &tokens, &token_count);
 			free(word);
 			continue;
+		} else if (word && strcmp(word, "exit") == 0) {
+			Token token = token_create(_exit, "exit");
+			add_token(token, &tokens, &token_count);
+			free(word);
+			continue;
 		} else if (word && isdigit(word[0])) { // TODO: Loop to verify whole word isdigit
 			Token token = token_create(_int, word);
 			add_token(token, &tokens, &token_count);
