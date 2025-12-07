@@ -11,7 +11,7 @@ void tokens_to_asm(const Token* tokens, size_t count) {
 	for (size_t i = 0; i < count; i++) {
 		const Token token = tokens[i];
 
-		if (token.type == _ret) {
+		if (token.type == _ret || token.type == _exit) {
 			if (i + 2 < count) {
 				const Token num = tokens[i + 1];
 				const Token semi = tokens[i + 2];
