@@ -9,7 +9,7 @@ int write_asm(const char* filename, const char* num) {
 		fprintf(stderr, "Input Error: Cannot find %s", filename);
 
 		// Failure
-		return 1;
+		return 0;
 	}
 
 	// Output to file
@@ -19,5 +19,5 @@ int write_asm(const char* filename, const char* num) {
 	fclose(out);
 
 	// Success
-	return 0;
+	return 1;
 }
