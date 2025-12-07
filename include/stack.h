@@ -1,3 +1,7 @@
+// Include Guard, prevents compilation errors
+#ifndef STACK_H
+#define STACK_H
+
 #include <string.h>
 
 /**
@@ -28,3 +32,4 @@ const char peakAhead(Stack* stack, int ahead);
  */
 char consume(Stack* stack);
 
+#endif // Closes STACK_H include guard
