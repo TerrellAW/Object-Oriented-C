@@ -28,6 +28,6 @@ typedef struct {
 /**
  * @brief Turns a string into a collection of tokens.
  */
-Token* tokenize(const char* str);
+Token* tokenize(char* str);
 
 #endif // Closes TOKENIZER_H include guard

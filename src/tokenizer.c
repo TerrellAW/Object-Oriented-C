@@ -4,35 +4,8 @@
 #include <ctype.h>
 
 #include "../include/utils.h"
+#include "../include/stack.h"
 #include "../include/tokenizer.h"
-
-void add_char(char* out_c, char** out_arr, size_t* out_size) {
-	// Look for alphabetical chars
-	if (isalpha(*out_c)) {
-		// Calculate memory that must be allocated
-		size_t new_size = (*out_size + 1) * sizeof(char);
-		// Allocate more memory for the word array
-		*out_arr = safe_realloc(*out_arr, new_size);
-		// Add character to word array
-		(*out_arr)[*out_size] = *out_c;
-		// Increment word_size
-		(*out_size)++;
-	}
-}
-
-void add_num(char* out_c, char** out_arr, size_t* out_size) {
-	// Look for alphabetical chars
-	if (isdigit(*out_c)) {
-		// Calculate memory that must be allocated
-		size_t new_size = (*out_size + 1) * sizeof(char);
-		// Allocate more memory for the word array
-		*out_arr = safe_realloc(*out_arr, new_size);
-		// Add character to word array
-		(*out_arr)[*out_size] = *out_c;
-		// Increment word_size
-		(*out_size)++;
-	}
-}
 
 Token token_create(enum TokenType type, char* value) {
 	Token token;
@@ -52,66 +25,78 @@ void add_token(Token token, Token** out_arr, size_t* out_size) {
 	(*out_size)++;
 }
 
-Token* tokenize(const char* str) {
+Token* tokenize(char* str) {
 	// Initialize token array
 	Token* tokens = NULL;
 	size_t token_count = 0;
+
+	// Initialize stack
+	Stack stack = stack_create(str);
 	
-	// Get element count
-	size_t count = strlen(str);
-	
-	// Loop through alphanumeric elements
-	for (size_t i = 0; i < count; i++) {
+	// Loop until peak returns null terminator
+	while(peak(&stack) != '\0') {
 		// Create buffer array to store words
 		char* word = NULL;
 		size_t word_size = 0;
+		
+		// Peak current character
+		char c = peak(&stack);
 
-		char c = str[i];
-		int has_run = 0;
-		while (isalnum(c)) {
-			add_char(&c, &word, &word_size);
-			add_num(&c, &word, &word_size);
-			i++;
-			c = str[i];
-			has_run = 1;
+		// Handle multi-character tokens
+		if (isalnum(c)) {
+			// Loop and consume all alnum chars
+			while(peak(&stack) != '\0' && isalnum(peak(&stack))) {
+				// Consume char
+				char curr_c = consume(&stack);
+
+				// Add to word buffer
+				size_t new_size = (word_size + 1) * sizeof(char);
+				word = safe_realloc(word, new_size);
+				word[word_size++] = curr_c;
+			}
+
+			// Terminate the word string
+			if (word_size > 0) {
+				word = safe_realloc(word, word_size + 1);
+				word[word_size] = '\0';
+			} else {
+				continue; // just in case
+			}
+
+			// Match words to tokens
+			if (strcmp(word, "return") == 0) {
+				add_token(token_create(_ret, "return"), &tokens, &token_count);
+				free(word); // Can free since its not stored as token value
+				continue;
+			} else if (strcmp(word, "exit") == 0) {
+				add_token(token_create(_exit, "exit"), &tokens, &token_count);
+				free(word); // Can free since its not stored as token value
+				continue;
+			} else if (isdigit(word[0])) {
+				add_token(token_create(_int, word), &tokens, &token_count);
+				// word is owned by token
+			} else {
+				fprintf(stderr, "Invalid Token Error: Unknown Identifier/Number %s", word);
+				free(word);
+				exit(EXIT_FAILURE);
+			}
 		}
-
-		// Add null terminator if word has content
-		if (word_size > 0 && word != NULL) {
-			word = safe_realloc(word, word_size + 1);
-			word[word_size] = '\0';
-		}
-
-		// Check if index needs to decrement
-		if (has_run == 1) {
-			i--;
-			c = str[i];
-		}
-
-		// Check if string matches token
-		if (word && strcmp(word, "return") == 0) {
-			Token token = token_create(_ret, "return");
-			add_token(token, &tokens, &token_count);
-			free(word);
-			continue;
-		} else if (word && strcmp(word, "exit") == 0) {
-			Token token = token_create(_exit, "exit");
-			add_token(token, &tokens, &token_count);
-			free(word);
-			continue;
-		} else if (word && isdigit(word[0])) { // TODO: Loop to verify whole word isdigit
-			Token token = token_create(_int, word);
-			add_token(token, &tokens, &token_count);
-		} else if (c == ';') {
-			Token token = token_create(_semi, ";");
-			add_token(token, &tokens, &token_count);
+		// Handle single-character tokens
+		else if (c == ';') {
+			consume(&stack);
+			add_token(token_create(_semi, ";"), &tokens, &token_count);
 		} else if (isspace(c)) {
+			consume(&stack);
 			continue;
-		} else {
-			fprintf(stderr, "Invalid Token Error: %s", word);
+		} else { // Unrecognized character
+			consume(&stack);
+			fprintf(stderr, "Invalid Token Error: Unrecognized character %c", c);
 			free(word);
 			exit(EXIT_FAILURE);
 		}
 	}
+
+	// TODO: EOF token if needed
+	
 	return tokens;
 }
