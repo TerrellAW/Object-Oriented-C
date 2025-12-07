@@ -8,7 +8,7 @@
  * @brief Stack data structure for characters.
  */
 typedef struct {
-	int idx;
+	size_t idx;
 	char* e;
 } Stack;
 

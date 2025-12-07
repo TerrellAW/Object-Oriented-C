@@ -10,7 +10,7 @@
  * @brief Stack data structure for tokens.
  */
 typedef struct {
-	int idx;
+	size_t idx;
 	Token* token;
 } TokenStack;
 
