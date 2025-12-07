@@ -9,12 +9,16 @@ void tokens_to_asm(const Token* tokens, size_t count) {
 
 	for (size_t i = 0; i < count; i++) {
 		const Token token = tokens[i];
-		const char* num = tokens[i + 1].value;
 
 		if (token.type == _ret) {
-			if (i++ < count && tokens[i + 1].type == _int) {
-				if (i + 2 < count && tokens[i + 2].type == _semi) {
-					printf("global _start\nstart:\n    mov rax, 60\n    mov rdi, %s\n    syscall", num);
+			if (i + 2 < count) {
+				const Token num = tokens[i + 1];
+				const Token semi = tokens[i + 2];
+				
+				if (num.type == _int && semi.type == _semi) {
+					const char* ret_val_str = num.value;
+
+					printf("global _start\n_start:\n    mov rax, 60\n    mov rdi, %s\n    syscall\n", ret_val_str);
 				}
 			}
 		}
@@ -41,12 +45,8 @@ int main(int argc, char* argv[]) {
 	// Tokenize code string
 	const Token* tokens = tokenize(code);
 
-	// Calculate size of array
-	size_t arrlen = sizeof(*tokens);
-	size_t tokens_len = arrlen / sizeof(tokens[0]);
-
 	// Output assembly to terminal
-	tokens_to_asm(tokens, tokens_len);
+	tokens_to_asm(tokens, 3);
 
 	// Clean and exit
 	free(code);
