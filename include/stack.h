@@ -5,7 +5,7 @@
 #include <string.h>
 
 /**
- * @brief Stack data structure.
+ * @brief Stack data structure for characters.
  */
 typedef struct {
 	int idx;

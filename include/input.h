@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/utils.h"
+#include "utils.h"
 
 /**
  * @brief Reads an entire file and converts it into a string.
