@@ -27,7 +27,7 @@ void tokens_to_asm(const Token* tokens, size_t count) {
 
 int main(int argc, char* argv[]) {
 	// If no launch parameters are given
-	if (argc != 2) {
+	if (argc < 2) { // TODO: Add arg for asm file output
 		// Explain usage
 		fprintf(stderr, "Usage:\n");
 		fprintf(stderr, "ooc <input.ooc>");
