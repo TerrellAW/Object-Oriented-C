@@ -76,6 +76,12 @@ Token* tokenize(const char* str) {
 			has_run = 1;
 		}
 
+		// Add null terminator if word has content
+		if (word_size > 0 && word != NULL) {
+			word = safe_realloc(word, word_size + 1);
+			word[word_size] = '\0';
+		}
+
 		// Check if index needs to decrement
 		if (has_run == 1) {
 			i--;
@@ -91,7 +97,6 @@ Token* tokenize(const char* str) {
 		} else if (word && isdigit(word[0])) { // TODO: Loop to verify whole word isdigit
 			Token token = token_create(_int, word);
 			add_token(token, &tokens, &token_count);
-			free(word);
 		} else if (c == ';') {
 			Token token = token_create(_semi, ";");
 			add_token(token, &tokens, &token_count);

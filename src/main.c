@@ -4,6 +4,23 @@
 #include "../include/input.h"
 #include "../include/tokenizer.h"
 
+// Temp, until parser is implemented
+void tokens_to_asm(const Token* tokens, size_t count) {
+
+	for (size_t i = 0; i < count; i++) {
+		const Token token = tokens[i];
+		const char* num = tokens[i + 1].value;
+
+		if (token.type == _ret) {
+			if (i++ < count && tokens[i + 1].type == _int) {
+				if (i + 2 < count && tokens[i + 2].type == _semi) {
+					printf("global _start\nstart:\n    mov rax, 60\n    mov rdi, %s\n    syscall", num);
+				}
+			}
+		}
+	}
+}
+
 int main(int argc, char* argv[]) {
 	// If no launch parameters are given
 	if (argc != 2) {
@@ -22,7 +39,14 @@ int main(int argc, char* argv[]) {
 	}
 
 	// Tokenize code string
-	Token* tokens = tokenize(code);
+	const Token* tokens = tokenize(code);
+
+	// Calculate size of array
+	size_t arrlen = sizeof(*tokens);
+	size_t tokens_len = arrlen / sizeof(tokens[0]);
+
+	// Output assembly to terminal
+	tokens_to_asm(tokens, tokens_len);
 
 	// Clean and exit
 	free(code);
