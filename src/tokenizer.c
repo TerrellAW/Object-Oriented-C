@@ -4,6 +4,7 @@
 #include <ctype.h>
 
 #include "../include/utils.h"
+#include "../include/hash.h"
 #include "../include/stack.h"
 #include "../include/tokenizer.h"
 
@@ -63,36 +64,64 @@ Token* tokenize(char* str) {
 				continue; // just in case
 			}
 
-			// Match words to tokens
-			if (strcmp(word, "return") == 0) {
-				add_token(token_create(_ret, "return"), &tokens, &token_count);
-				free(word); // Can free since its not stored as token value
-				continue;
-			} else if (strcmp(word, "exit") == 0) {
-				add_token(token_create(_exit, "exit"), &tokens, &token_count);
-				free(word); // Can free since its not stored as token value
-				continue;
-			} else if (isdigit(word[0])) {
+			// Generate hash code
+			int word_hash = gen_word_hash(word, word_size);
+
+			// Match hash codes to tokens
+			switch (word_hash) {
+				case 783: // return
+					if (strcmp(word, "return") == 0) {
+						add_token(token_create(_ret, "return"), &tokens, &token_count);
+					} else {
+						goto handle_error;
+					}
+					break;
+				case 459: // exit
+					if (strcmp(word, "exit") == 0) {
+						add_token(token_create(_exit, "exit"), &tokens, &token_count);
+					} else {
+						goto handle_error;
+					}
+					break;
+				default:
+					goto handle_error;
+			}
+
+			free(word); // free unowned string
+			continue; // skip error handling
+
+		handle_error:
+			if (isdigit(word[0])) {
 				add_token(token_create(_int, word), &tokens, &token_count);
 				// word is owned by token
 			} else {
+				// TODO: Handle identifiers, ie. variable names
 				fprintf(stderr, "Invalid Token Error: Unknown Identifier/Number %s", word);
 				free(word);
 				exit(EXIT_FAILURE);
 			}
-		}
+		} 
 		// Handle single-character tokens
-		else if (c == ';') {
-			consume(&stack);
-			add_token(token_create(_semi, ";"), &tokens, &token_count);
-		} else if (isspace(c)) {
-			consume(&stack);
-			continue;
-		} else { // Unrecognized character
-			consume(&stack);
-			fprintf(stderr, "Invalid Token Error: Unrecognized character %c", c);
-			free(word);
-			exit(EXIT_FAILURE);
+		else {
+			switch (c) {
+				case ';':
+					consume(&stack);
+					add_token(token_create(_semi, ";"), &tokens, &token_count);
+					break;
+				case ' ': 	// Space
+				case '\t': 	// Horizontal Tab
+				case '\n':	// Newline
+				case '\r':	// Carriage Return
+				case '\v':	// Vertical Tab
+				case '\f':	// Form Feed
+					consume(&stack);
+					break;
+				default: // Unrecognized character
+					consume(&stack);
+					fprintf(stderr, "Invalid Token Error: Unrecognized character %c", c);
+					free(word);
+					exit(EXIT_FAILURE);
+			}
 		}
 	}
 
