@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-#include "../include/tokenizer.h"
+#include "tokenizer.h"
 
 /**
  * @brief Stack data structure for tokens.
