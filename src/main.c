@@ -47,6 +47,11 @@ int main(int argc, char* argv[]) {
 	// Output assembly to out.asm
 	tokens_to_asm(tokens, 3);
 
+	// Call nasm
+	system("nasm -felf64 out.asm");
+	// Call linker
+	system("ld -o out out.o");
+
 	// Clean and exit
 	free(code);
 	exit(EXIT_SUCCESS);
