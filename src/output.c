@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int write_asm(const char* filename) {
+int write_asm(const char* filename, const char* num) {
 	// Open specified file in write mode
 	FILE* out = fopen(filename, "w");
 
@@ -12,7 +12,8 @@ int write_asm(const char* filename) {
 		return 1;
 	}
 
-	
+	// Output to file
+	fprintf(out, "global _start\n_start:\n    mov rax, 60\n    mov rdi, %s\n    syscall\n", num);
 	
 	// Clean up and return
 	fclose(out);

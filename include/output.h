@@ -3,4 +3,4 @@
 /**
  * @brief Writes assembly code to the specified file.
  */
-int write_asm(const char* filename);
+int write_asm(const char* filename, const char* val);

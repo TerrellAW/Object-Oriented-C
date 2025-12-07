@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "../include/input.h"
+#include "../include/output.h"
 #include "../include/tokenizer.h"
 
 // Temp, until parser is implemented
@@ -16,9 +17,7 @@ void tokens_to_asm(const Token* tokens, size_t count) {
 				const Token semi = tokens[i + 2];
 				
 				if (num.type == _int && semi.type == _semi) {
-					const char* ret_val_str = num.value;
-
-					printf("global _start\n_start:\n    mov rax, 60\n    mov rdi, %s\n    syscall\n", ret_val_str);
+					write_asm("out.asm", num.value);
 				}
 			}
 		}
@@ -45,7 +44,7 @@ int main(int argc, char* argv[]) {
 	// Tokenize code string
 	const Token* tokens = tokenize(code);
 
-	// Output assembly to terminal
+	// Output assembly to out.asm
 	tokens_to_asm(tokens, 3);
 
 	// Clean and exit
