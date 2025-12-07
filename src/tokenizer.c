@@ -92,11 +92,27 @@ Token* tokenize(char* str) {
 
 		handle_error:
 			if (isdigit(word[0])) {
-				add_token(token_create(_int, word), &tokens, &token_count);
-				// word is owned by token
+				int is_valid = 1;
+
+				// Iterate through word to ensure its all numbers
+				for (size_t i = 1; i < word_size; i++) {
+					if (!isdigit(word[i])) {
+						is_valid = 0;
+						break;
+					}
+				}
+
+				if (is_valid) { // valid number
+					add_token(token_create(_int, word), &tokens, &token_count);
+					// word is owned by token
+				} else { // mix of numbers and letters
+					fprintf(stderr, "Invalid Token Error: Unknown Number %s", word);
+					free(word);
+					exit(EXIT_FAILURE);
+				}
 			} else {
 				// TODO: Handle identifiers, ie. variable names
-				fprintf(stderr, "Invalid Token Error: Unknown Identifier/Number %s", word);
+				fprintf(stderr, "Invalid Token Error: Unknown Identifier %s", word);
 				free(word);
 				exit(EXIT_FAILURE);
 			}
