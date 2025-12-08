@@ -32,10 +32,16 @@ int main(int argc, char* argv[]) {
 	Parser parser = parser_create(tokens);
 
 	// Parse tokens
-	NodeExit ext = parse(parser);
+	NodeExit tree = parse(parser);
+
+	// Parse failure
+	if (!tree.expr.token.value) {
+		fprintf(stderr, "Parsing Error: Failed to find entry point.");
+		exit(EXIT_FAILURE);
+	}
 
 	// Create generator
-	Generator gen = gen_create(ext);
+	Generator gen = gen_create(tree);
 
 	// Generate assembly
 	generate(gen, 3); // TODO: Take count from tokenizer or parser
