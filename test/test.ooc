@@ -1,1 +1,1 @@
-exit 66;
+return 1; exit 66;
