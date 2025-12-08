@@ -18,14 +18,14 @@ typedef struct {
 Stack stack_create(char* src);
 
 /**
- * @brief Peaks at next value in stack.
+ * @brief Peeks at next value in stack.
  */
-const char peak(Stack* stack);
+const char peek(Stack* stack);
 
 /**
- * @brief Peaks ahead the specified amount.
+ * @brief Peeks ahead the specified amount.
  */
-const char peakAhead(Stack* stack, int ahead);
+const char peekAhead(Stack* stack, int ahead);
 
 /**
  * @brief Consumes the current element and moves forward.

@@ -11,24 +11,24 @@ TokenStack token_stack_create(Token* token, size_t count) {
 	return stack;
 }
 
-int token_peak(TokenStack* stack, Token* out_token) {
+int token_peek(TokenStack* stack, Token* out_token) {
 	if (stack->idx >= stack->count) {
 		return 0; // Failure
 	} else { 
-		// Send peaked token to out pointer
+		// Send peeked token to out pointer
 		*out_token = stack->token[stack->idx];
 		return 1; // Success
 	}
 }
 
-int token_peakAhead(TokenStack* stack, int ahead, Token* out_token) {
-	// Find index to peak to
+int token_peekAhead(TokenStack* stack, int ahead, Token* out_token) {
+	// Find index to peek to
 	size_t new_idx = stack->idx + ahead;
 
 	if (new_idx >= stack->count) {
 		return 0; // Failure
 	} else {
-		// Send peaked token to out pointer
+		// Send peeked token to out pointer
 		*out_token = stack->token[new_idx];
 		return 1; // Success
 	}

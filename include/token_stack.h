@@ -21,14 +21,14 @@ typedef struct {
 TokenStack token_stack_create(Token* token, size_t count);
 
 /**
- * @brief Peaks at next value in stack.
+ * @brief Peeks at next value in stack.
  */
-int token_peak(TokenStack* stack, Token* out_token);
+int token_peek(TokenStack* stack, Token* out_token);
 
 /**
- * @brief Peaks ahead the specified amount.
+ * @brief Peeks ahead the specified amount.
  */
-int token_peakAhead(TokenStack* stack, int ahead, Token* out_token);
+int token_peekAhead(TokenStack* stack, int ahead, Token* out_token);
 
 /**
  * @brief Consumes the current element and moves forward.

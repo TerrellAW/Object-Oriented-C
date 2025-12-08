@@ -30,7 +30,7 @@ NodeExit exit_create(NodeExpr expr) {
 }
 
 int parse_expr(TokenStack* stack, Token* curr_token, NodeExpr* out_expr) {
-	if (token_peak(stack, curr_token) && curr_token->type == _int) {
+	if (token_peek(stack, curr_token) && curr_token->type == _int) {
 		*out_expr = expr_create(*curr_token);
 		token_consume(stack, curr_token);
 		return 1; // success
@@ -58,7 +58,7 @@ NodeExit parse(Parser parser) {
 	NodeExpr expr;
 
 	// Iterate through token stack
-	while(token_peak(&stack, &curr_token)) {
+	while(token_peek(&stack, &curr_token)) {
 		if (curr_token.type == _exit) { // Exit node
 			token_consume(&stack, &curr_token);
 			if (parse_expr(&stack, &curr_token, &expr)) {
@@ -89,7 +89,7 @@ NodeExit parse(Parser parser) {
 		}
 
 		// Check if next token is the semi-colon
-		if (token_peak(&stack, &curr_token) && curr_token.type == _semi) {
+		if (token_peek(&stack, &curr_token) && curr_token.type == _semi) {
 			token_consume(&stack, &curr_token);
 		} else {
 			fprintf(stderr, "Parsing Error: Expected ';' after statement\n");

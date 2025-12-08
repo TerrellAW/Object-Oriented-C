@@ -34,20 +34,20 @@ Token* tokenize(char* str, size_t* out_count) {
 	// Initialize stack
 	Stack stack = stack_create(str);
 	
-	// Loop until peak returns null terminator
-	while(peak(&stack) != '\0') {
+	// Loop until peek returns null terminator
+	while(peek(&stack) != '\0') {
 		// Create buffer array to store words
 		size_t word_cap = 16;
 		char* word = safe_malloc(word_cap);
 		size_t word_size = 0;
 		
 		// Peak current character
-		char c = peak(&stack);
+		char c = peek(&stack);
 
 		// Handle multi-character tokens
 		if (isalnum(c)) {
 			// Loop and consume all alnum chars
-			while(peak(&stack) != '\0' && isalnum(peak(&stack))) {
+			while(peek(&stack) != '\0' && isalnum(peek(&stack))) {
 				// Consume char
 				char curr_c = consume(&stack);
 
