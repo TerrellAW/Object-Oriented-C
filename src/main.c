@@ -2,27 +2,9 @@
 #include <stdio.h>
 
 #include "../include/input.h"
-#include "../include/output.h"
 #include "../include/tokenizer.h"
-
-// Temp, until parser is implemented
-void tokens_to_asm(const Token* tokens, size_t count) {
-
-	for (size_t i = 0; i < count; i++) {
-		const Token token = tokens[i];
-
-		if (token.type == _ret || token.type == _exit) {
-			if (i + 2 < count) {
-				const Token num = tokens[i + 1];
-				const Token semi = tokens[i + 2];
-				
-				if (num.type == _int && semi.type == _semi) {
-					write_asm("out.asm", num.value);
-				}
-			}
-		}
-	}
-}
+#include "../include/parser.h"
+#include "../include/generator.h"
 
 int main(int argc, char* argv[]) {
 	// If no launch parameters are given
@@ -33,6 +15,8 @@ int main(int argc, char* argv[]) {
 
 		exit(EXIT_FAILURE);
 	}
+
+	// TODO: Read config file for project name, etc...
 	
 	// Read input file
 	long lSize = 0;
@@ -42,15 +26,24 @@ int main(int argc, char* argv[]) {
 	}
 
 	// Tokenize code string
-	const Token* tokens = tokenize(code);
+	Token* tokens = tokenize(code);
 
-	// Output assembly to out.asm
-	tokens_to_asm(tokens, 3);
+	// Create parser
+	Parser parser = parser_create(tokens);
+
+	// Parse tokens
+	NodeExit ext = parse(parser);
+
+	// Create generator
+	Generator gen = gen_create(ext);
+
+	// Generate assembly
+	generate(gen, 3); // TODO: Take count from tokenizer or parser
 
 	// Call nasm
-	system("nasm -felf64 out.asm");
+	system("nasm -felf64 out.asm"); // TODO: File name from user input
 	// Call linker
-	system("ld -o out out.o");
+	system("ld -o out out.o"); // TODO: File name from user input
 
 	// Clean and exit
 	free(code);

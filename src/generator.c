@@ -10,5 +10,5 @@ Generator gen_create(NodeExit root) {
 }
 
 int generate(Generator generator, size_t count) {
-	return write_asm("out.asm", generator.root.expr.token.value);
+	return write_asm("out.asm", generator.root.expr.token.value); // TODO: Take file name from user input
 }
