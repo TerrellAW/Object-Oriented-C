@@ -126,6 +126,14 @@ Token* tokenize(char* str, size_t* out_count) {
 		// Handle single-character tokens
 		else {
 			switch (c) {
+				case '(':
+					consume(&stack);
+					add_token(token_create(_oparen, "("), &tokens, &token_count);
+					break;
+				case ')':
+					consume(&stack);
+					add_token(token_create(_cparen, ")"), &tokens, &token_count);
+					break;
 				case ';':
 					consume(&stack);
 					add_token(token_create(_semi, ";"), &tokens, &token_count);

@@ -11,11 +11,13 @@
  * @brief Enumerates the valid token types for the Token struct.
  */
 enum TokenType {
-	_exit,	// exit
-	_ret, 	// return
-	_int, 	// int
-	_semi, 	// ;
-	_eof	// EOF
+	_exit,		// exit
+	_ret, 		// return
+	_int, 		// int
+	_semi, 		// ;
+	_oparen,	// (
+	_cparen,	// )
+	_eof		// EOF
 };
 
 /**
