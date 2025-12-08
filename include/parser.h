@@ -11,6 +11,7 @@
  */
 typedef struct {
 	Token* tokens;
+	size_t count;
 } Parser;
 
 /**
@@ -37,7 +38,7 @@ typedef struct {
 /**
  * @brief Parse tree constructor.
  */
-Parser parser_create(Token* tokens);
+Parser parser_create(Token* tokens, size_t count);
 
 /**
  * @brief Constructs expression node.

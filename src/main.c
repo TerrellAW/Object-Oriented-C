@@ -26,10 +26,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	// Tokenize code string
-	Token* tokens = tokenize(code);
+	size_t token_count = 0;
+	Token* tokens = tokenize(code, &token_count);
 
 	// Create parser
-	Parser parser = parser_create(tokens);
+	Parser parser = parser_create(tokens, token_count);
 
 	// Parse tokens
 	NodeExit tree = parse(parser);

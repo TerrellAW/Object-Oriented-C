@@ -14,7 +14,8 @@ enum TokenType {
 	_exit,	// exit
 	_ret, 	// return
 	_int, 	// int
-	_semi 	// ;
+	_semi, 	// ;
+	_eof	// EOF
 };
 
 /**
@@ -28,6 +29,6 @@ typedef struct {
 /**
  * @brief Turns a string into a collection of tokens.
  */
-Token* tokenize(char* str);
+Token* tokenize(char* str, size_t* out_count);
 
 #endif // Closes TOKENIZER_H include guard

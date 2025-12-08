@@ -26,7 +26,7 @@ void add_token(Token token, Token** out_arr, size_t* out_size) {
 	(*out_size)++;
 }
 
-Token* tokenize(char* str) {
+Token* tokenize(char* str, size_t* out_count) {
 	// Initialize token array
 	Token* tokens = NULL;
 	size_t token_count = 0;
@@ -147,7 +147,11 @@ Token* tokenize(char* str) {
 		}
 	}
 
-	// TODO: EOF token if needed
+	// Add EOF token
+	add_token(token_create(_eof, NULL), &tokens, &token_count);
 	
+	// Return count
+	*out_count = token_count;
+
 	return tokens;
 }

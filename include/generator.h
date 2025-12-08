@@ -2,8 +2,8 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
 
-#include "parser.h"
 #include <stdio.h>
+#include "parser.h"
 
 typedef struct {
 	NodeExit root; // Temporary root

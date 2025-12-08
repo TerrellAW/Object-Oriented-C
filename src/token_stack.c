@@ -3,15 +3,16 @@
 #include "../include/token_stack.h"
 #include "../include/tokenizer.h"
 
-TokenStack token_stack_create(Token* token) {
+TokenStack token_stack_create(Token* token, size_t count) {
 	TokenStack stack;
 	stack.idx = 0;
 	stack.token = token;
+	stack.count = count;
 	return stack;
 }
 
 int token_peak(TokenStack* stack, Token* out_token) {
-	if (!stack->token[stack->idx].value) {
+	if (stack->idx >= stack->count) {
 		return 0; // Failure
 	} else { 
 		// Send peaked token to out pointer
@@ -24,7 +25,7 @@ int token_peakAhead(TokenStack* stack, int ahead, Token* out_token) {
 	// Find index to peak to
 	size_t new_idx = stack->idx + ahead;
 
-	if (!stack->token[new_idx].value) {
+	if (new_idx >= stack->count) {
 		return 0; // Failure
 	} else {
 		// Send peaked token to out pointer

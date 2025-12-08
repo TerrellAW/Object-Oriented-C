@@ -1,7 +1,8 @@
+#include <stdio.h>
+
 #include "../include/generator.h"
 #include "../include/output.h"
 #include "../include/parser.h"
-#include <stdio.h>
 
 Generator gen_create(NodeExit root) {
 	Generator gen;

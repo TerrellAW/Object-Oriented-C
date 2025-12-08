@@ -4,9 +4,10 @@
 #include "../include/tokenizer.h"
 #include "../include/token_stack.h"
 
-Parser parser_create(Token* tokens) {
+Parser parser_create(Token* tokens, size_t count) {
 	Parser parser;
 	parser.tokens = tokens;
+	parser.count = count;
 	return parser;
 }
 
@@ -42,8 +43,11 @@ NodeExit parse(Parser parser) {
 	// Initialize Token array
 	Token* tokens = parser.tokens;
 
+	// Restore retrieved count
+	size_t count = parser.count;
+
 	// Initialize Token Stack
-	TokenStack stack = token_stack_create(tokens);
+	TokenStack stack = token_stack_create(tokens, count);
 
 	// Initialize current Token
 	Token curr_token;
@@ -57,26 +61,38 @@ NodeExit parse(Parser parser) {
 	while(token_peak(&stack, &curr_token)) {
 		if (curr_token.type == _exit) { // Exit node
 			token_consume(&stack, &curr_token);
-			if (parse_expr(&stack, &curr_token, &expr) != 0) {
+			if (parse_expr(&stack, &curr_token, &expr)) {
 				// Parse expression and pass to exit node
 				ext = exit_create(expr);
 			} else {
-				fprintf(stderr, "Invalid expression %s", curr_token.value);
+				fprintf(stderr, "Parsing Error: Expected expression after 'exit'\n");
 				exit(EXIT_FAILURE);
 			}
-		}
-		if (curr_token.type == _ret) { // Return node
+		} else if (curr_token.type == _ret) { // Return node
 			token_consume(&stack, &curr_token);
-			if (parse_expr(&stack, &curr_token, &expr) != 0) {
+			if (parse_expr(&stack, &curr_token, &expr)) {
 				// Parse expression and pass to return node
 				ret = ret_create(expr);
 			} else {
-				fprintf(stderr, "Invalid expression %s", curr_token.value);
+				fprintf(stderr, "Parsing Error: Expected expression after 'return'\n");
 				exit(EXIT_FAILURE);
 			}
+		} else { // Undefined token
+			// Ensure token is not EOF
+			if (curr_token.type == _eof) {
+				// Ignore and break the loop
+				break;
+			}
+			
+			fprintf(stderr, "Parsing Error: Unexpected token %s\n", curr_token.value);
+			exit(EXIT_FAILURE);
 		}
-		if (!token_peak(&stack, &curr_token) || curr_token.type != _semi) {
-			fprintf(stderr, "Invalid expression %s", curr_token.value);
+
+		// Check if next token is the semi-colon
+		if (token_peak(&stack, &curr_token) && curr_token.type == _semi) {
+			token_consume(&stack, &curr_token);
+		} else {
+			fprintf(stderr, "Parsing Error: Expected ';' after statement\n");
 			exit(EXIT_FAILURE);
 		}
 	}

@@ -12,12 +12,13 @@
 typedef struct {
 	size_t idx;
 	Token* token;
+	size_t count;
 } TokenStack;
 
 /**
  * @brief Stack constructor.
  */
-TokenStack token_stack_create(Token* token);
+TokenStack token_stack_create(Token* token, size_t count);
 
 /**
  * @brief Peaks at next value in stack.
