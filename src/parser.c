@@ -28,7 +28,7 @@ NodeExit exit_create(NodeExpr expr) {
 	ext.expr = expr;
 	return ext;
 }
-
+// TODO: Fix everything after parser header refactor
 int parse_expr(TokenStack* stack, Token* curr_token, NodeExpr* out_expr) {
 	if (token_peek(stack, curr_token) && curr_token->type == _int) {
 		*out_expr = expr_create(*curr_token);

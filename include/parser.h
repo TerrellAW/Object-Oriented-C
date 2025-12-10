@@ -15,10 +15,42 @@ typedef struct {
 } Parser;
 
 /**
- * @brief Node for expressions.
+ * @brief Enumerates the possible types of expressions.
+ */
+typedef enum {
+	expr_int,
+	expr_idnt
+} ExprType;
+
+/**
+ * @brief Node for integer literals.
  */
 typedef struct {
 	Token token;
+} NodeInt;
+
+/**
+ * @brief Node for variable identifiers.
+ */
+typedef struct {
+	Token token;
+} NodeIdnt;
+
+/**
+ * @brief Node for expressions.
+ */
+typedef struct {
+	// Active type
+	ExprType type;
+	
+	// Primary token
+	Token token;
+
+	// Union of expression types
+	union {
+		NodeInt node_int;
+		NodeIdnt node_idnt;
+	} as;
 } NodeExpr;
 
 /**
@@ -29,11 +61,51 @@ typedef struct {
 } NodeRet;
 
 /**
- * @brief Node for exit command.
+ * @brief Enumerates the possible types of statements.
  */
+typedef enum {
+	stmt_exit,
+	stmt_ret,
+	stmt_type
+} StmtType;
+
 typedef struct {
 	NodeExpr expr;
-} NodeExit;
+} NodeStmtExit;
+
+typedef struct {
+	NodeExpr expr;
+} NodeStmtRet;
+
+typedef struct {
+	Token ident;
+	NodeExpr expr;
+} NodeStmtType;
+
+/**
+ * @brief Node for statements.
+ */
+typedef struct {
+	// Active type
+	StmtType type;
+
+	// Primary expression
+	NodeExpr expr;
+
+	// Union of statement types
+	union {
+		NodeStmtExit node_exit;
+		NodeStmtRet node_ret;
+		NodeStmtType node_type;
+	} as;
+} NodeStmt;
+
+/**
+ * @brief Node for main entry point.
+ */
+typedef struct {
+	NodeStmt* stmts;
+} NodeMain;
 
 /**
  * @brief Parse tree constructor.

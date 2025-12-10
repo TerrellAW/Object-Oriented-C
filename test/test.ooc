@@ -1,1 +1,2 @@
-exit(66);
+int x = 7;
+exit(x);
