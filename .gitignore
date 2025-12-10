@@ -11,3 +11,6 @@ launch.json
 
 # Doxygen
 Doxyfile
+
+# Clang
+.cache/
