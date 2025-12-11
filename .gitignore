@@ -14,3 +14,4 @@ Doxyfile
 
 # Clang
 .cache/
+compile_commands.json
