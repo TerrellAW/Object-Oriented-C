@@ -13,10 +13,13 @@
 enum TokenType {
 	_exit,		// exit
 	_ret, 		// return
+	_type,		// type declaration
 	_int, 		// int
 	_semi, 		// ;
 	_oparen,	// (
 	_cparen,	// )
+	_idnt,		// identifier (variable name)
+	_eq,		// =
 	_eof		// EOF
 };
 
