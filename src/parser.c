@@ -118,6 +118,7 @@ int parse_expr(TokenStack* stack, Token* curr_token, NodeExpr* out_expr) {
 	}
 }
 
+// TODO: Refactor to use switch statements and a central semi-colon checking system
 int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr* out_expr, NodeStmt* out_stmt) {
 	Token ahdahd_token;
 	Token stmt_keyword = *curr_token;
@@ -153,12 +154,20 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 
 	// Return statement
 	} else if (curr_token->type == _ret) {
-		token_consume(stack, curr_token);
+		token_consume(stack, curr_token); // Consume 'return'
 		if (parse_expr(stack, curr_token, out_expr)) {
 			// Parse expression and pass to return statement
-			*out_stmt = stmt_create(*curr_token, *out_expr);
+			*out_stmt = stmt_create(stmt_keyword, *out_expr);
 		} else {
 			fprintf(stderr, "Parsing Error: Expected expression after 'return'\n");
+			exit(EXIT_FAILURE);
+		}
+
+		// Check if next token is the semi-colon
+		if (token_peek(stack, curr_token) && curr_token->type == _semi) {
+			token_consume(stack, curr_token);
+		} else {
+			fprintf(stderr, "Parsing Error: Expected ';' after statement\n");
 			exit(EXIT_FAILURE);
 		}
 
