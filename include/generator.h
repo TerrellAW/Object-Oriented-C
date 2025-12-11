@@ -3,10 +3,12 @@
 #define GENERATOR_H
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "parser.h"
 
 typedef struct {
 	NodeMain root;
+	bool has_exit; // Flag to track exit code
 } Generator;
 
 /**
