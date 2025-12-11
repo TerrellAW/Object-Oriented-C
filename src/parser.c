@@ -58,19 +58,17 @@ NodeStmtType type_create(NodeExpr expr, Token idnt) {
 }
 
 StmtType set_stmt_type(Token token) {
-	if (token.type) {
-		switch (token.type) {
-			case _exit:
-				return stmt_exit;
-			case _ret:
-				return stmt_ret;
-			case _type:
-				return stmt_type;
-			default:
-				// If token does not have a valid type, should be impossible
-				fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
-				exit(EXIT_FAILURE);
-		}
+	switch (token.type) {
+		case _exit:
+			return stmt_exit;
+		case _ret:
+			return stmt_ret;
+		case _type:
+			return stmt_type;
+		default:
+			// If token does not have a valid type, should be impossible
+			fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
+			exit(EXIT_FAILURE);
 	}
 
 	// If token does not have a valid type, should be impossible
@@ -87,10 +85,13 @@ NodeStmt stmt_create(Token token, NodeExpr expr) {
 	switch (stmt.type) {
 		case stmt_exit:
 			stmt.var.node_exit = exit_create(expr);
+			break;
 		case stmt_ret:
 			stmt.var.node_ret = ret_create(expr);
+			break;
 		case stmt_type:
 			stmt.var.node_type = type_create(expr, token);
+			break;
 		default:
 			// If token does not have a valid type, should be impossible
 			fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
@@ -119,6 +120,7 @@ int parse_expr(TokenStack* stack, Token* curr_token, NodeExpr* out_expr) {
 
 int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr* out_expr, NodeStmt* out_stmt) {
 	Token ahdahd_token;
+	Token stmt_keyword = *curr_token;
 
 	// Exit statement
 	if (curr_token->type == _exit && token_peekAhead(stack, 1, ahd_token)
@@ -127,7 +129,7 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 		token_consume(stack, curr_token); // Consume open paren
 		if (parse_expr(stack, curr_token, out_expr)) {
 			// Parse expression and pass to exit statement
-			*out_stmt = stmt_create(*curr_token, *out_expr);
+			*out_stmt = stmt_create(stmt_keyword, *out_expr);
 		} else {
 			fprintf(stderr, "Parsing Error: Expected expression in 'exit'\n");
 			exit(EXIT_FAILURE);
@@ -188,11 +190,6 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 }
 
 void add_to_main(NodeMain* out_main, NodeStmt stmt, size_t* out_count) {
-	if (!stmt.type) {
-		fprintf(stderr, "Parsing Error: Invalid statement\n");
-		exit(EXIT_FAILURE);
-	}
-
 	// If no error, increment count
 	(*out_count)++;
 	// Allocate memory for new statement

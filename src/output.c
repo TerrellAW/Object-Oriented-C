@@ -26,7 +26,7 @@ int write_start(const char* filename) {
 
 int write_exit(const char* filename, const char* num) {
 	// Open specified file in write mode
-	FILE* out = fopen(filename, "w");
+	FILE* out = fopen(filename, "a");
 
 	// Error handling
 	if (!out) {
@@ -48,7 +48,7 @@ int write_exit(const char* filename, const char* num) {
 
 int write_exit_from_stack(const char* filename) {
 	// Open specified file in write mode
-	FILE* out = fopen(filename, "w");
+	FILE* out = fopen(filename, "a");
 
 	// Error handling
 	if (!out) {
@@ -70,7 +70,7 @@ int write_exit_from_stack(const char* filename) {
 
 int write_int(const char* filename, const char* value) {
 	// Open specified file in write mode
-	FILE* out = fopen(filename, "w");
+	FILE* out = fopen(filename, "a");
 
 	// Error handling
 	if (!out) {

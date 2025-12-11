@@ -37,6 +37,7 @@ typedef struct {
  * @brief Enumerates the possible types of statements.
  */
 typedef enum {
+	stmt_invalid = 0,
 	stmt_exit,
 	stmt_ret,
 	stmt_type
