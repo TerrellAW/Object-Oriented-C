@@ -6,17 +6,17 @@
 #include "parser.h"
 
 typedef struct {
-	NodeExit root; // Temporary root
+	NodeMain root;
 } Generator;
 
 /**
  * @brief Constructs generator.
  */
-Generator gen_create(NodeExit root);
+Generator gen_create(NodeMain root);
 
 /**
  * @brief Generates assembly code from parse tree.
  */
-int generate(Generator generator, size_t count);
+int generate(Generator generator, size_t stmt_count, const char* outputname);
 
 #endif // Closes GENERATOR_H include guard

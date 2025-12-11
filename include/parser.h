@@ -23,42 +23,15 @@ typedef enum {
 } ExprType;
 
 /**
- * @brief Node for integer literals.
- */
-typedef struct {
-	Token token;
-} NodeInt;
-
-/**
- * @brief Node for variable identifiers.
- */
-typedef struct {
-	Token token;
-} NodeIdnt;
-
-/**
  * @brief Node for expressions.
  */
 typedef struct {
-	// Active type
+	// Type
 	ExprType type;
 	
-	// Primary token
+	// Token
 	Token token;
-
-	// Union of expression types
-	union {
-		NodeInt node_int;
-		NodeIdnt node_idnt;
-	} as;
 } NodeExpr;
-
-/**
- * @brief Node for return command.
- */
-typedef struct {
-	NodeExpr expr;
-} NodeRet;
 
 /**
  * @brief Enumerates the possible types of statements.
@@ -78,7 +51,7 @@ typedef struct {
 } NodeStmtRet;
 
 typedef struct {
-	Token ident;
+	Token idnt;
 	NodeExpr expr;
 } NodeStmtType;
 
@@ -97,7 +70,7 @@ typedef struct {
 		NodeStmtExit node_exit;
 		NodeStmtRet node_ret;
 		NodeStmtType node_type;
-	} as;
+	} var;
 } NodeStmt;
 
 /**
@@ -113,23 +86,43 @@ typedef struct {
 Parser parser_create(Token* tokens, size_t count);
 
 /**
+ * @brief Sets the expression type.
+ */
+ExprType set_expr_type(Token token);
+
+/**
  * @brief Constructs expression node.
  */
 NodeExpr expr_create(Token token);
 
 /**
- * @brief Constructs return node.
+ * @brief Constructs an exit statement node.
  */
-NodeRet ret_create(NodeExpr expr);
+NodeStmtExit exit_create(NodeExpr expr);
 
 /**
- * @brief Constructs exit node.
+ * @brief Constructs a return statement node.
  */
-NodeExit exit_create(NodeExpr expr);
+NodeStmtRet ret_create(NodeExpr expr);
 
 /**
- * @brief Parses tokens using parse tree.
+ * @brief Constructs a type declaration / variable node.
  */
-NodeExit parse(Parser parser);
+NodeStmtType type_create(NodeExpr expr, Token idnt);
+
+/**
+ * @brief Sets statement type.
+ */
+StmtType set_stmt_type(Token token);
+
+/**
+ * @brief Constructs a statement node.
+ */
+NodeStmt stmt_create(Token token, NodeExpr expr);
+
+/**
+ * @brief Parses statements into a program.
+ */
+NodeMain parse(Parser parser, size_t* out_stmt_count);
 
 #endif // Closes PARSER_H include guard

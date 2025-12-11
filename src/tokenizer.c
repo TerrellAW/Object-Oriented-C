@@ -89,6 +89,12 @@ Token* tokenize(char* str, size_t* out_count) {
 						goto handle_error;
 					}
 					break;
+				case 489: // int
+					if (strcmp(word, "int") == 0) {
+						add_token(token_create(_type, "int"), &tokens, &token_count);
+					} else {
+						goto handle_error;
+					}
 				default:
 					goto handle_error;
 			}
@@ -117,10 +123,9 @@ Token* tokenize(char* str, size_t* out_count) {
 					exit(EXIT_FAILURE);
 				}
 			} else {
-				// TODO: Handle identifiers, ie. variable names
-				fprintf(stderr, "Invalid Token Error: Unknown Identifier %s", word);
-				free(word);
-				exit(EXIT_FAILURE);
+				// Handle identifiers, ie. variable names
+				add_token(token_create(_idnt, word), &tokens, &token_count);
+				// word is owned by token
 			}
 		} 
 		// Handle single-character tokens
@@ -137,6 +142,10 @@ Token* tokenize(char* str, size_t* out_count) {
 				case ';':
 					consume(&stack);
 					add_token(token_create(_semi, ";"), &tokens, &token_count);
+					break;
+				case '=':
+					consume(&stack);
+					add_token(token_create(_eq, "="), &tokens, &token_count);
 					break;
 				case ' ': 	// Space
 				case '\t': 	// Horizontal Tab

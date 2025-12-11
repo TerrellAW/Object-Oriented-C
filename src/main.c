@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	// TODO: Read config file for project name, etc...
+	// TODO: Add arg for executable name
 	
 	// Read input file
 	long lSize = 0;
@@ -33,24 +33,25 @@ int main(int argc, char* argv[]) {
 	Parser parser = parser_create(tokens, token_count);
 
 	// Parse tokens
-	NodeExit tree = parse(parser);
+	size_t stmt_count = 0;
+	NodeMain prog = parse(parser, &stmt_count);
 
 	// Parse failure
-	if (!tree.expr.token.value) {
+	if (!prog.stmts) {
 		fprintf(stderr, "Parsing Error: Failed to find entry point.");
 		exit(EXIT_FAILURE);
 	}
 
 	// Create generator
-	Generator gen = gen_create(tree);
+	Generator gen = gen_create(prog);
 
 	// Generate assembly
-	generate(gen, 3); // TODO: Take count from tokenizer or parser
+	generate(gen, stmt_count, "out.asm"); // TODO: Get output filename from user input or source file name
 
 	// Call nasm
-	system("nasm -felf64 out.asm"); // TODO: File name from user input
+	system("nasm -felf64 out.asm"); // TODO: File name from user input or source file name
 	// Call linker
-	system("ld -o out out.o"); // TODO: File name from user input
+	system("ld -o out out.o"); // TODO: File name from user input or source file name
 
 	// Clean and exit
 	free(code);
