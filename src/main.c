@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 	Generator gen = gen_create(prog);
 
 	// Generate assembly
-	generate(gen, stmt_count, "out.asm"); // TODO: Get output filename from user input or source file name
+	generate(gen, stmt_count, "out.asm", &gen.stack_size); // TODO: Get output filename from user input or source file name
 
 	// Call nasm
 	system("nasm -felf64 out.asm"); // TODO: File name from user input or source file name

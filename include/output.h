@@ -13,9 +13,14 @@ int write_exit(const char* filename, const char* val);
 /**
  * @brief Writes exit assembly with exit code from the stack.
  */
-int write_exit_from_stack(const char* filename);
+int write_exit_from_stack(const char* filename, size_t* out_size);
 
 /**
- * @brief Pushes an integer variable onto the system stack.
+ * @brief Pushes the value from a register onto the system stack.
  */
-int write_int(const char* filename, const char* value);
+int write_push(const char* filename, const char* reg, size_t* out_size);
+
+/**
+ * @brief Pops a value from the system stack into a register.
+ */
+int write_pop(const char* filename, const char* reg, size_t* out_size);
