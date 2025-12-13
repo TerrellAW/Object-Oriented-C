@@ -75,6 +75,7 @@ Token* tokenize(char* str, size_t* out_count) {
 
 			// Match hash codes to tokens
 			switch (word_hash) {
+				case 489: // ret, shorthand alias for return
 				case 783: // return
 					if (strcmp(word, "return") == 0) {
 						add_token(token_create(_ret, "return"), &tokens, &token_count);
@@ -89,7 +90,7 @@ Token* tokenize(char* str, size_t* out_count) {
 						goto handle_error;
 					}
 					break;
-				case 489: // int
+				case 399: // int
 					if (strcmp(word, "int") == 0) {
 						add_token(token_create(_type, "int"), &tokens, &token_count);
 					} else {
