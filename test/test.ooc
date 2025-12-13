@@ -1,1 +1,1 @@
-return 42; exit(76);
+ret 42; exit(76);

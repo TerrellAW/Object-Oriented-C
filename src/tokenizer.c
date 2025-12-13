@@ -77,7 +77,7 @@ Token* tokenize(char* str, size_t* out_count) {
 			switch (word_hash) {
 				case 489: // ret, shorthand alias for return
 				case 783: // return
-					if (strcmp(word, "return") == 0) {
+					if (strcmp(word, "return") == 0 || strcmp(word, "ret") ==0) {
 						add_token(token_create(_ret, "return"), &tokens, &token_count);
 					} else {
 						goto handle_error;
@@ -96,6 +96,7 @@ Token* tokenize(char* str, size_t* out_count) {
 					} else {
 						goto handle_error;
 					}
+					break;
 				default:
 					goto handle_error;
 			}
