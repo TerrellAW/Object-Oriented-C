@@ -1,15 +1,22 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "../include/generator.h"
 #include "../include/output.h"
 #include "../include/parser.h"
+#include "../include/var_hsh_map.h"
+
+ht map; // init empty map
 
 Generator gen_create(NodeMain root) {
 	Generator gen;
 	gen.root = root;
 	gen.stack_size = 0;
 	gen.has_exit = false;
+	gen.vars = NULL;
+	gen.var_count = 0;
 	return gen;
 }
 
@@ -19,9 +26,9 @@ void gen_expr(const NodeExpr expr, const char* outputname, size_t* out_size) {
 			write_push(outputname, expr.token.value, out_size); // Push value of integer onto stack
 			break;
 		case expr_idnt:
-			exit(EXIT_FAILURE); // TODO
+			exit(EXIT_FAILURE); // TODO actually deal with identifiers
 		default:
-			exit(EXIT_FAILURE); // TODO
+			exit(EXIT_FAILURE); // TODO error handling
 	}
 }
 
@@ -39,9 +46,19 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 			generator->has_exit = true;
 			break;
 		case stmt_type:
-			exit(EXIT_FAILURE); // TODO
+			for (int i = 0; i < generator->var_count; i++) {
+				if (strcmp(stmt.var.node_type.idnt.value, generator->vars[i].name)) {
+					fprintf(stderr, "Compiler Error: Identifier already used %s\n", generator->vars[i].name);
+					exit(EXIT_FAILURE);
+				}
+				
+				// TODO: Evaluate expression
+
+				// TODO: Insert variable into map
+				// TODO: Push into system stack
+			}
 		default:
-			exit(EXIT_FAILURE); // TODO
+			exit(EXIT_FAILURE); // TODO error handling
 	}
 }
 
@@ -60,3 +77,4 @@ int generate(Generator generator, size_t stmt_count, const char* outputname, siz
 	}
 	return 1; // successful function execution
 }
+

@@ -7,9 +7,16 @@
 #include "parser.h"
 
 typedef struct {
+	size_t stack_loc;
+	const char* name;
+} Var;
+
+typedef struct {
 	NodeMain root;
 	size_t stack_size;
-	bool has_exit; // Flag to track exit code
+	bool has_exit; 		// Flag to track exit code
+	Var* vars; 			// Array of variables in code
+	size_t var_count;	// Count of variables in array
 } Generator;
 
 /**
