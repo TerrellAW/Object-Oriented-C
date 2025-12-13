@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../include/utils.h"
 
@@ -34,4 +35,15 @@ void* safe_realloc(void* ptr, size_t size) {
 	}
 
 	return rptr;
+}
+
+// Copy a string
+char* safe_strdup(const char* s) {
+	size_t slen = strlen(s);
+	char* res = safe_malloc(slen + 1);
+	if (res == NULL) {
+		return NULL; // handle alloc failure, probably unecessary
+	}
+	memcpy(res, s, slen + 1); // copy data into new, bigger string
+	return res; // return result
 }

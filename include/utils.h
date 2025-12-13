@@ -4,7 +4,6 @@
 
 // Standard Library
 #include <stdio.h>
-#include <stdlib.h>
 
 /**
  * @brief Allocates memory safely.
@@ -37,5 +36,16 @@ void* safe_calloc(size_t num, size_t size);
  * @return Pointer to allocated memory.
  */
 void* safe_realloc(void* ptr, size_t size);
+
+/**
+ * @brief Copies a string.
+ *
+ * Custom implementation of POSIX strdup().
+ * Allocates memory using safe_malloc(), which handles allocation failures.
+ *
+ * @param s String of characters to copy.
+ * @return Pointer to first character of duplicate string.
+ */
+char* safe_strdup(const char* s);
 
 #endif // Closes UTILS_H include guard
