@@ -5,6 +5,9 @@
 # Swap files
 *.swp
 
+# VSCode
+.vscode/
+
 # Debug files
 .vimspector.json
 launch.json
