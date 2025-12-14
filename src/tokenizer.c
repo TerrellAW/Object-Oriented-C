@@ -3,10 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "../include/utils.h"
-#include "../include/hash.h"
-#include "../include/stack.h"
-#include "../include/tokenizer.h"
+#include "utils.h"
+#include "hash.h"
+#include "stack.h"
+#include "tokenizer.h"
 
 Token token_create(enum TokenType type, char* value) {
 	Token token;

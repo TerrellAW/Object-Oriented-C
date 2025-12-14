@@ -5,8 +5,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "../include/var_hsh_map.h"
-#include "../include/utils.h"
+#include "var_hsh_map.h"
+#include "utils.h"
 
 // Set initial capacity to 16
 const size_t init_capacity = 16;

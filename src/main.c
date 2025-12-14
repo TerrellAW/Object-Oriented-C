@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../include/input.h"
-#include "../include/tokenizer.h"
-#include "../include/parser.h"
-#include "../include/generator.h"
+#include "input.h"
+#include "tokenizer.h"
+#include "parser.h"
+#include "generator.h"
 
 int main(int argc, char* argv[]) {
 	// If no launch parameters are given

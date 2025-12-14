@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/utils.h"
+#include "utils.h"
 
 char* read_input(const char* filename, long* file_size) {
 	// Open specified file in binary read mode

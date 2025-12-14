@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../include/output.h"
+#include "output.h"
 
 int write_start(const char* filename) {
 	// Open specified file in write mode

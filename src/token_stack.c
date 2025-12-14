@@ -1,7 +1,7 @@
 #include <string.h>
 
-#include "../include/token_stack.h"
-#include "../include/tokenizer.h"
+#include "token_stack.h"
+#include "tokenizer.h"
 
 TokenStack token_stack_create(Token* token, size_t count) {
 	TokenStack stack;

@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../include/parser.h"
-#include "../include/tokenizer.h"
-#include "../include/token_stack.h"
-#include "../include/utils.h"
+#include "parser.h"
+#include "tokenizer.h"
+#include "token_stack.h"
+#include "utils.h"
 
 Parser parser_create(Token* tokens, size_t count) {
 	Parser parser;

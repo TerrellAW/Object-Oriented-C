@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "../include/stack.h"
+#include "stack.h"
 
 Stack stack_create(char* src) {
 	Stack stack;

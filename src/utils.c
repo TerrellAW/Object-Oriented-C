@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/utils.h"
+#include "utils.h"
 
 // Memory allocation wrapper
 void* safe_malloc(size_t size) {

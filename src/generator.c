@@ -3,10 +3,10 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "../include/generator.h"
-#include "../include/output.h"
-#include "../include/parser.h"
-#include "../include/var_hsh_map.h"
+#include "generator.h"
+#include "output.h"
+#include "parser.h"
+#include "var_hsh_map.h"
 #include "utils.h"
 
 ht* map; // init empty map
