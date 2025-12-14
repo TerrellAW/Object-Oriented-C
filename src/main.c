@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 	if (argc < 2) { // TODO: Add arg for asm file output
 		// Explain usage
 		fprintf(stderr, "Usage:\n");
-		fprintf(stderr, "ooc <input.ooc>");
+		fprintf(stderr, "ooc <input.oc>");
 
 		exit(EXIT_FAILURE);
 	}
