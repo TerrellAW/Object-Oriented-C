@@ -42,7 +42,7 @@ void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname,
 				exit(EXIT_FAILURE);
 			}
 			// Get stack offset for variable
-			sprintf(asm_stmt, "qword [rsp+%zu]", (generator->stack_size - var.stack_loc - 1) * 4);
+			sprintf(asm_stmt, "qword [rsp+%zu]", (generator->stack_size - var.stack_loc - 1) * 8);
 			write_push(outputname, asm_stmt, out_size);
 			break;
 		default:
