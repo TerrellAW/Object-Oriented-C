@@ -18,7 +18,7 @@ void* safe_malloc(size_t size) {
 // Zero-initialized memory allocation wrapper
 void* safe_calloc(size_t num, size_t size) {
 	void* cptr = calloc(num, size);
-	if (!cptr || !num) {
+	if (!cptr && num * size > 0) {
 		fprintf(stderr, "Allocation Error: safe_calloc failed to allocate %zu bytes for %zu elements\n", size, num);
 		exit(EXIT_FAILURE);
 	}

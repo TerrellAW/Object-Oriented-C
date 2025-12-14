@@ -54,6 +54,14 @@ NodeStmtType type_create(NodeExpr expr, Token idnt) {
 	NodeStmtType type;
 	type.expr = expr;
 	type.idnt = idnt;
+	
+	// Deep copy
+	if (idnt.value != NULL) {
+		type.idnt.value = safe_strdup(idnt.value);
+	} else {
+		fprintf(stderr, "Parsing Error: Type declaration name corrupted");
+	}
+
 	return type;
 }
 
@@ -76,6 +84,19 @@ StmtType set_stmt_type(Token token) {
 	exit(EXIT_FAILURE);
 }
 
+NodeStmt stmt_create_dec(Token idnt, NodeExpr expr) {
+	NodeStmt stmt;
+
+	// Create valid type declaration statement
+	stmt.type = stmt_type;
+	stmt.expr = expr;
+
+	// Create variant node
+	stmt.var.node_type = type_create(expr, idnt);
+
+	return stmt;
+}
+
 NodeStmt stmt_create(Token token, NodeExpr expr) {
 	NodeStmt stmt;
 	stmt.type = set_stmt_type(token);
@@ -88,9 +109,6 @@ NodeStmt stmt_create(Token token, NodeExpr expr) {
 			break;
 		case stmt_ret:
 			stmt.var.node_ret = ret_create(expr);
-			break;
-		case stmt_type:
-			stmt.var.node_type = type_create(expr, token);
 			break;
 		default:
 			// If token does not have a valid type, should be impossible
@@ -177,18 +195,19 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 			&& ahd_token->type == _idnt
 			&& token_peekAhead(stack, 2, &ahdahd_token)
 			&& ahdahd_token.type == _eq) {
+		Token type = *curr_token; // Store type declarator
+		Token idnt = *ahd_token; // Store identifier
 		token_consume(stack, curr_token); // Consume type
-		Token idnt = *curr_token; // Store identifier
 		token_consume(stack, curr_token); // Consume idnt
 		token_consume(stack, curr_token); // Consume equals
 		if (parse_expr(stack, curr_token, out_expr)) {
 			// Parse expression and pass to type statement
-			*out_stmt = stmt_create(idnt, *out_expr);
+			*out_stmt = stmt_create_dec(idnt, *out_expr);
 		} else {
 			fprintf(stderr, "Parsing Error: Invalid expression %s\n", out_expr->token.value);
 			exit(EXIT_FAILURE);
 		}
-		if (curr_token->type == _semi) {
+		if (token_peek(stack, curr_token) && curr_token->type == _semi) {
 			token_consume(stack, curr_token); // Consume semi-colon
 		} else {
 			fprintf(stderr, "Parsing Error: Expected ';' after statement\n");

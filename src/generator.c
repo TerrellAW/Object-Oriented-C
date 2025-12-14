@@ -9,7 +9,7 @@
 #include "../include/var_hsh_map.h"
 #include "utils.h"
 
-ht map; // init empty map
+ht* map; // init empty map
 
 Generator gen_create(NodeMain root) {
 	Generator gen;
@@ -22,14 +22,14 @@ Generator gen_create(NodeMain root) {
 }
 
 void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname, size_t* out_size) {
-	char* asm_stmt = "";
+	char asm_stmt[64];
 	switch (expr.type) {
 		case expr_int:
 			write_push(outputname, expr.token.value, out_size); // Push value of integer onto stack
 			break;
 		case expr_idnt:
 			// Find matching variable
-			Var var;
+			Var var = { .name = NULL };
 			for (size_t i = 0; i < generator->var_count; i++) {
 				if (strcmp(expr.token.value, generator->vars[i].name) == 0) {
 					var = generator->vars[i];
@@ -42,7 +42,7 @@ void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname,
 				exit(EXIT_FAILURE);
 			}
 			// Get stack offset for variable
-			sprintf(asm_stmt, "[rsp+%zu]", generator->stack_size - var.stack_loc);
+			sprintf(asm_stmt, "qword [rsp+%zu]", (generator->stack_size - var.stack_loc - 1) * 4);
 			write_push(outputname, asm_stmt, out_size);
 			break;
 		default:
@@ -65,26 +65,31 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 			break;
 		case stmt_type:
 			for (size_t i = 0; i < generator->var_count; i++) {
-				if (strcmp(stmt.var.node_type.idnt.value, generator->vars[i].name)) {
-					fprintf(stderr, "Compilation Error: Identifier already used %s\n", generator->vars[i].name);
+				if (strcmp(stmt.var.node_type.idnt.value, generator->vars[i].name) == 0) {
+					fprintf(stderr, "Compilation Error: Variable already declared %s\n", generator->vars[i].name);
 					exit(EXIT_FAILURE);
 				}
-				// Add to generator
-				Var var; // Initialize variable struct
-				var.name = stmt.var.node_type.idnt.value; // Get name from identifier
-				var.stack_loc = *out_size; // Top of stack is size of stack
-			    size_t new_size = generator->var_count + 1;
-				generator->vars = safe_realloc(generator->vars, new_size); // Allocate space for new var
-				generator->vars[generator->var_count] = var; // Add new var to generator
-				generator->var_count++; // Increment count
-
-				// Insert variable into map
-				ht_insert(&map, generator->vars[generator->var_count - 1].name,
-						&generator->vars[generator->var_count - 1].name);
-				
-				// Evaluate expression
-				gen_expr(generator, stmt.expr, outputname, out_size); // Push expression onto stack
 			}
+			// Add to generator
+			Var var; // Initialize variable struct
+			var.name = stmt.var.node_type.idnt.value; // Get name from identifier
+			var.stack_loc = generator->stack_size; // Top of stack is size of stack
+			size_t new_count = generator->var_count + 1;
+			size_t new_size = new_count * sizeof(Var);
+			generator->vars = safe_realloc(generator->vars, new_size); // Allocate space for new var
+			generator->vars[generator->var_count] = var; // Add new var to generator
+
+			// Insert variable into map
+			Var* var_ptr = &generator->vars[generator->var_count];
+			ht_insert(map, var_ptr->name, var_ptr);
+			generator->var_count++; // Increment count
+			
+			// Evaluate expression
+			gen_expr(generator, stmt.expr, outputname, out_size); // Push expression onto stack
+
+			// Update stack size
+			generator->stack_size++;
+				
 			break;
 		default:
 			exit(EXIT_FAILURE); // TODO error handling
@@ -92,6 +97,12 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 }
 
 int generate(Generator generator, size_t stmt_count, const char* outputname, size_t* out_size) {
+	// Initialize global hash map
+	map = ht_create();
+	if (map == NULL) {
+		fprintf(stderr, "Fatal Error: Failed to initialize hash map.\n");
+	}
+
 	// Start program
 	write_start(outputname);
 
@@ -104,6 +115,10 @@ int generate(Generator generator, size_t stmt_count, const char* outputname, siz
 	if (!generator.has_exit) {
 		write_exit(outputname, "0"); // default status code, 0 for successful program execution
 	}
+
+	// Deallocate map
+	ht_destroy(map);
+
 	return 1; // successful function execution
 }
 

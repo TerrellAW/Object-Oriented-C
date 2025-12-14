@@ -39,7 +39,8 @@ int token_consume(TokenStack* stack, Token* out_token) {
 		return 0; // Failure
 	}
 
-	// Send current token to out pointer and then increment
-	*out_token = stack->token[stack->idx++]; // postfix increment
+	// Increment and send next token to out pointer
+	stack->idx++; // increment stack pointer
+	token_peek(stack, out_token); // update out_token
 	return 1; // Success
 }
