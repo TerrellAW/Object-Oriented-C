@@ -56,10 +56,8 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 				// TODO: Evaluate expression
 				gen_expr(stmt.expr, outputname, out_size); // Push expression onto stack
 
-				// TODO: Insert variable into map
-				char* key = "";
-				sprintf(key, "%d", gen_word_hash(generator->vars[i].name, strlen(generator->vars[i].name)));
-				ht_set(&map, key, &generator->vars[i].name);
+				// Insert variable into map
+				ht_insert(&map, generator->vars[i].name, &generator->vars[i].name);
 
 				// TODO: Push into system stack
 				
