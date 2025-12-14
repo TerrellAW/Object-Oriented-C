@@ -7,7 +7,7 @@
 #include "../include/output.h"
 #include "../include/parser.h"
 #include "../include/var_hsh_map.h"
-#include "../include/hash.h"
+#include "utils.h"
 
 ht map; // init empty map
 
@@ -52,12 +52,22 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 					fprintf(stderr, "Compiler Error: Identifier already used %s\n", generator->vars[i].name);
 					exit(EXIT_FAILURE);
 				}
-				
-				// TODO: Evaluate expression
-				gen_expr(stmt.expr, outputname, out_size); // Push expression onto stack
+
+				// Add to generator
+				Var var; // Initialize variable struct
+				var.name = stmt.var.node_type.idnt.value; // Get name from identifier
+				var.stack_loc = *out_size; // Top of stack is size of stack
+			    size_t new_size = generator->var_count + 1;
+				generator->vars = safe_realloc(generator->vars, new_size); // Allocate space for new var
+				generator->vars[generator->var_count] = var; // Add new var to generator
+				generator->var_count++; // Increment count
 
 				// Insert variable into map
-				ht_insert(&map, generator->vars[i].name, &generator->vars[i].name);
+				ht_insert(&map, generator->vars[generator->var_count - 1].name,
+						&generator->vars[generator->var_count - 1].name);
+				
+				// Evaluate expression
+				gen_expr(stmt.expr, outputname, out_size); // Push expression onto stack
 
 				// TODO: Push into system stack
 				
