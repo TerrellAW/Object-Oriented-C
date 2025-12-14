@@ -22,14 +22,16 @@ Generator gen_create(NodeMain root) {
 }
 
 void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname, size_t* out_size) {
+	// Initialize
 	char asm_stmt[64];
+	Var var = { .name = NULL };
+
 	switch (expr.type) {
 		case expr_int:
 			write_push(outputname, expr.token.value, out_size); // Push value of integer onto stack
 			break;
 		case expr_idnt:
 			// Find matching variable
-			Var var = { .name = NULL };
 			for (size_t i = 0; i < generator->var_count; i++) {
 				if (strcmp(expr.token.value, generator->vars[i].name) == 0) {
 					var = generator->vars[i];
@@ -38,7 +40,7 @@ void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname,
 			}
 			// Handle undeclared variable
 			if (var.name == NULL) {
-				fprintf(stderr, "Compilation Error: Undeclared variable %s", expr.token.value);
+				fprintf(stderr, "Compilation Error: Undeclared variable %s\n", expr.token.value);
 				exit(EXIT_FAILURE);
 			}
 			// Get stack offset for variable
@@ -46,7 +48,8 @@ void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname,
 			write_push(outputname, asm_stmt, out_size);
 			break;
 		default:
-			exit(EXIT_FAILURE); // TODO error handling
+			fprintf(stderr, "Compilation Error: Unrecognized expression %s\n", expr.token.value);
+			exit(EXIT_FAILURE);
 	}
 }
 
@@ -92,7 +95,8 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 				
 			break;
 		default:
-			exit(EXIT_FAILURE); // TODO error handling
+			fprintf(stderr, "Compilation Error: Unrecognized statement\n");
+			exit(EXIT_FAILURE);
 	}
 }
 
