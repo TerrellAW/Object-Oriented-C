@@ -59,6 +59,8 @@ typedef struct {
  * - gen.var_count = 0;
  *
  * @param root The entry point node that will be used as the root of the tree.
+ *
+ * @return Generator struct with a root node and initialized fields.
  */
 Generator gen_create(NodeMain root);
 
@@ -73,6 +75,8 @@ Generator gen_create(NodeMain root);
  * @param stmt_count The amount of statements that will be processed.
  * @param outputname The output file the assembly code will be written in.
  * @param out_size Out pointer to manipulate the size of the stack.
+ *
+ * @return 1 if successful, exits program with failure code otherwise.
  */
 int generate(Generator generator, size_t stmt_count, const char* outputname, size_t* out_size);
 
