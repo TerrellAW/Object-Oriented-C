@@ -9,7 +9,7 @@ char* read_input(const char* filename, long* file_size) {
 
 	// Error handling
 	if (!in) {
-		fprintf(stderr, "Input Error: Cannot find %s", filename);
+		fprintf(stderr, "Input Error: Cannot find %s\n", filename);
 
 		// Failure
 		return NULL;
@@ -24,7 +24,7 @@ char* read_input(const char* filename, long* file_size) {
 	char* buffer = safe_calloc(1, lSize + 1); // Allocate for content and null terminator
 	if (!buffer) {
 		fclose(in);
-		fprintf(stderr, "Input Error: Failed to allocate memory for %s", filename);
+		fprintf(stderr, "Input Error: Failed to allocate memory for %s\n", filename);
 
 		// Failure
 		return NULL;
@@ -35,7 +35,7 @@ char* read_input(const char* filename, long* file_size) {
 	if (result != lSize) {
 		fclose(in);
 		free(buffer);
-		fprintf(stderr, "Input Error: Failed to read %s", filename);
+		fprintf(stderr, "Input Error: Failed to read %s\n", filename);
 
 		// Failure
 		return NULL;

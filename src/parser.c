@@ -60,7 +60,7 @@ NodeStmtType type_create(NodeExpr expr, Token idnt) {
 	if (idnt.value != NULL) {
 		type.idnt.value = safe_strdup(idnt.value);
 	} else {
-		fprintf(stderr, "Parsing Error: Type declaration name corrupted");
+		fprintf(stderr, "Parsing Error: Type declaration name corrupted\n");
 	}
 
 	return type;

@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 	if (argc < 2) { // TODO: Add arg for asm file output
 		// Explain usage
 		fprintf(stderr, "Usage:\n");
-		fprintf(stderr, "ooc <input.oc>");
+		fprintf(stderr, "ooc <input.oc>\n");
 
 		exit(EXIT_FAILURE);
 	}
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 
 	// Parse failure
 	if (!prog.stmts) {
-		fprintf(stderr, "Parsing Error: Failed to find entry point.");
+		fprintf(stderr, "Parsing Error: Failed to find entry point\n");
 		exit(EXIT_FAILURE);
 	}
 
