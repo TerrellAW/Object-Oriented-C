@@ -3,9 +3,6 @@
 #define TOKENIZER_H
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 /**
  * @brief Enumerates the valid token types for the Token struct.

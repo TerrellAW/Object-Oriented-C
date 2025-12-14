@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include "tokenizer.h"
-#include "token_stack.h"
 
 /**
  * @brief Parse tree data structure.
