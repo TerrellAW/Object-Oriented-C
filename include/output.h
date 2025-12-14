@@ -16,7 +16,7 @@ int write_exit(const char* filename, const char* val);
 int write_exit_from_stack(const char* filename, size_t* out_size);
 
 /**
- * @brief Pushes the value from a register onto the system stack.
+ * @brief Pushes the given value or register (reg) onto the system stack.
  */
 int write_push(const char* filename, const char* reg, size_t* out_size);
 
