@@ -44,6 +44,12 @@ void* ht_get(ht* table, const char* key);
 const char* ht_set(ht* table, const char* key, void* value);
 
 /**
+ * @brief Insert an item into the hash table and return its address.
+ * Return address of updated key or NULL if duplicate is found.
+ */
+const char* ht_insert(ht* table, const char* key, void* value);
+
+/**
  * @brief Hash table iterator.
  * Create with ht_iterator
  * Iterate with ht_next

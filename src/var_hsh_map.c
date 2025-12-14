@@ -117,6 +117,44 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity,
 	return key;
 }
 
+// Insert an entry
+static const char* ht_insert_entry(ht_entry* entries, size_t capacity,
+		const char* key, void* value, size_t* out_length) {
+	// Hash key using hashing algorithm
+	uint32_t hash = hash_key(key);
+	size_t i = (size_t)(hash & (uint32_t)(capacity - 1));
+
+	// Loop until empty entry is found
+	while (entries[i].key != NULL) {
+		// Check for duplicate key value pair
+		if (strcmp(key, entries[i].key) == 0) {
+			return NULL;
+		}
+
+		// Key not found, iterate
+		i++;
+
+		// If at end of table, wrap around
+		if (i >= capacity) {
+			i = 0;
+		}
+	}
+	
+	// Didn't find duplicate key, reallocate and insert
+	if (out_length != NULL) {
+		key = safe_strdup(key);
+		if (key == NULL) {
+			return NULL;
+		}
+		(*out_length)++; // increment length
+	}
+
+	// Insert new entry
+	entries[i].key = (char*)key;
+	entries[i].value = value;
+	return key;
+}
+
 // Expand table capacity
 static bool ht_expand(ht* table) {
 	// Double capacity
@@ -162,6 +200,23 @@ const char* ht_set(ht* table, const char* key, void* value) {
 	}
 
 	return ht_set_entry(table->entries, table->capacity, key, value, &table->length);
+}
+
+// Insert a key
+const char* ht_insert(ht* table, const char* key, void* value) {
+	// Ensure operation is safe
+	if (value == NULL) {
+		return NULL;
+	}
+
+	// If table is half full expand it
+	if (table->length >= table->capacity / 2) {
+		if (!ht_expand(table)) { // check if expand succeeded
+			return NULL;
+		}
+	}
+
+	return ht_insert_entry(table->entries, table->capacity, key, value, &table->length);
 }
 
 // Retrieve length of table
