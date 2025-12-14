@@ -7,6 +7,7 @@
 #include "../include/output.h"
 #include "../include/parser.h"
 #include "../include/var_hsh_map.h"
+#include "../include/hash.h"
 
 ht map; // init empty map
 
@@ -46,16 +47,22 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 			generator->has_exit = true;
 			break;
 		case stmt_type:
-			for (int i = 0; i < generator->var_count; i++) {
+			for (size_t i = 0; i < generator->var_count; i++) {
 				if (strcmp(stmt.var.node_type.idnt.value, generator->vars[i].name)) {
 					fprintf(stderr, "Compiler Error: Identifier already used %s\n", generator->vars[i].name);
 					exit(EXIT_FAILURE);
 				}
 				
 				// TODO: Evaluate expression
+				gen_expr(stmt.expr, outputname, out_size); // Push expression onto stack
 
 				// TODO: Insert variable into map
+				char* key = "";
+				sprintf(key, "%d", gen_word_hash(generator->vars[i].name, strlen(generator->vars[i].name)));
+				ht_set(&map, key, &generator->vars[i].name);
+
 				// TODO: Push into system stack
+				
 			}
 		default:
 			exit(EXIT_FAILURE); // TODO error handling
