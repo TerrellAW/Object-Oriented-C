@@ -1,9 +1,12 @@
 ## Build
 
 The OOC compiler can be built with `make` if the following prerequisites are installed:
-    make
-    gcc (build-essential)
-    binutils
+    
+- make
+    
+- gcc (build-essential)
+    
+- binutils
 
 ## Usage
 
