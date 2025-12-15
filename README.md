@@ -1,19 +1,23 @@
 ## Build
 
 The OOC compiler can be built with `make` if the following prerequisites are installed:
-    
+ 
 - make
-    
+ 
 - gcc (build-essential)
-    
+
 - binutils
 
 ## Usage
 
 The command `./ooc <filepath.oc>` will turn `<filepath.oc` into a runnable executable.
 
-The command can be run with the following arguments:
-    TODO
+The command can be run with the following options:
+
+`--asm` or `-a` - Outputs a human readable assembly file, can specify a path after it
+`--out` or `-o` - Specify an output path/filename for the executable
+
+By default the compiler will output the object and executable file to the current directory.
 
 ## References
 
