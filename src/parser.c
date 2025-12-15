@@ -121,19 +121,19 @@ NodeStmt stmt_create(Token token, NodeExpr expr) {
 }
 
 int parse_expr(TokenStack* stack, Token* curr_token, NodeExpr* out_expr) {
-	// Integer type expression
-	if (token_peek(stack, curr_token) && curr_token->type == _int) {
-		*out_expr = expr_create(*curr_token);
-		token_consume(stack, curr_token);
-		return 1; // success
-	// Identifier type expression
-	} else if (token_peek(stack, curr_token) && curr_token->type == _idnt) {
-		*out_expr = expr_create(*curr_token);
-		token_consume(stack, curr_token);
-		return 1; // success
-	// Invalid expression
-	} else {
-		return 0; // fail
+	switch (curr_token->type) {
+		// Integer type expression
+		case _int:
+			*out_expr = expr_create(*curr_token);
+			token_consume(stack, curr_token);
+			return 1; // success
+		// Identifier type expression
+		case _idnt:
+			*out_expr = expr_create(*curr_token);
+			token_consume(stack, curr_token);
+			return 1; // success
+		default:
+			return 0; // fail
 	}
 }
 
