@@ -20,12 +20,12 @@ Stack stack_create(char* src);
 /**
  * @brief Peeks at next value in stack.
  */
-const char peek(Stack* stack);
+char peek(Stack* stack);
 
 /**
  * @brief Peeks ahead the specified amount.
  */
-const char peekAhead(Stack* stack, int ahead);
+char peekAhead(Stack* stack, int ahead);
 
 /**
  * @brief Consumes the current element and moves forward.

@@ -9,7 +9,7 @@ Stack stack_create(char* src) {
 	return stack;
 }
 
-const char peek(Stack* stack) {
+char peek(Stack* stack) {
 	if (stack->e[stack->idx] == '\0') { // check if at end of string
 		return '\0'; // return null terminator
 	} else {
@@ -17,7 +17,7 @@ const char peek(Stack* stack) {
 	}
 }
 
-const char peekAhead(Stack* stack, int ahead) {
+char peekAhead(Stack* stack, int ahead) {
 	// Find index to peek to
 	size_t new_idx = stack->idx + ahead;
 

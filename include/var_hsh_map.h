@@ -6,7 +6,7 @@
  * Can be filled or empty.
  */
 typedef struct {
-	const char* key;	// NULL if slot is empty
+	char* key;	// NULL if slot is empty
 	void* value;
 } ht_entry;
 

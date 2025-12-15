@@ -196,7 +196,6 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 			&& ahd_token->type == _idnt
 			&& token_peekAhead(stack, 2, &ahdahd_token)
 			&& ahdahd_token.type == _eq) {
-		Token type = *curr_token; // Store type declarator
 		Token idnt = *ahd_token; // Store identifier
 		token_consume(stack, curr_token); // Consume type
 		token_consume(stack, curr_token); // Consume idnt
