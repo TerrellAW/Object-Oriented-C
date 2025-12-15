@@ -14,9 +14,9 @@ The command `./ooc <filepath.oc>` will turn `<filepath.oc` into a runnable execu
 
 The command can be run with the following options:
 
-`--asm` or `-a` - Outputs a human readable assembly file, can specify a path after it
+- `--asm` or `-a` - Outputs a human readable assembly file, can specify a path after it
 
-`--out` or `-o` - Specify an output path/filename for the executable
+- `--out` or `-o` - Specify an output path/filename for the executable
 
 By default the compiler will output the object and executable file to the current directory.
 
