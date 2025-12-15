@@ -2,6 +2,11 @@
 [Bb]in/
 [Bb]uild/
 
+# Compiler testing products
+[Tt]est[Oo]ut/
+[Tt]est[Bb]in/
+[Tt]est[Bb]uild/
+
 # Swap files
 *.swp
 
