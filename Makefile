@@ -16,6 +16,8 @@ OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 # Output binary
 BIN = $(BIN_DIR)/ooc
 
+.PHONY: all test clean
+
 # Default target
 all: $(BIN)
 
@@ -29,6 +31,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Run OOC compiler test
+test:
+	@mkdir -p TestBin
+	$(BIN_DIR)/ooc test/test.oc -a TestBin/test.asm -o TestBin/test
+
 # Clean build artifacts via CLI parameter
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -rf TestBin
