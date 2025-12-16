@@ -120,7 +120,7 @@ Token* tokenize(char* str, size_t* out_count) {
 					add_token(token_create(_int, word), &tokens, &token_count);
 					// word is owned by token
 				} else { // mix of numbers and letters
-					fprintf(stderr, "Invalid Token Error: Unknown Number %s\n", word);
+					fprintf(stderr, "Invalid Token Error: Unknown Number '%s'\n", word);
 					free(word);
 					exit(EXIT_FAILURE);
 				}
@@ -159,7 +159,7 @@ Token* tokenize(char* str, size_t* out_count) {
 					break;
 				default: // Unrecognized character
 					consume(&stack);
-					fprintf(stderr, "Invalid Token Error: Unrecognized character %c\n", c);
+					fprintf(stderr, "Invalid Token Error: Unrecognized character '%c'\n", c);
 					free(word);
 					exit(EXIT_FAILURE);
 			}

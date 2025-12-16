@@ -40,7 +40,7 @@ void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname,
 			}
 			// Handle undeclared variable
 			if (var.name == NULL) {
-				fprintf(stderr, "Compilation Error: Undeclared variable %s\n", expr.token.value);
+				fprintf(stderr, "Compilation Error: Undeclared variable '%s'\n", expr.token.value);
 				exit(EXIT_FAILURE);
 			}
 			// Get stack offset for variable
@@ -48,7 +48,7 @@ void gen_expr(Generator* generator, const NodeExpr expr, const char* outputname,
 			write_push(outputname, asm_stmt, out_size);
 			break;
 		default:
-			fprintf(stderr, "Compilation Error: Unrecognized expression %s\n", expr.token.value);
+			fprintf(stderr, "Compilation Error: Unrecognized expression '%s'\n", expr.token.value);
 			exit(EXIT_FAILURE);
 	}
 }
@@ -69,7 +69,7 @@ void gen_stmt(Generator* generator, const NodeStmt stmt, const char* outputname,
 		case stmt_type:
 			for (size_t i = 0; i < generator->var_count; i++) {
 				if (strcmp(stmt.var.node_type.idnt.value, generator->vars[i].name) == 0) {
-					fprintf(stderr, "Compilation Error: Variable already declared %s\n", generator->vars[i].name);
+					fprintf(stderr, "Compilation Error: Variable already declared '%s'\n", generator->vars[i].name);
 					exit(EXIT_FAILURE);
 				}
 			}

@@ -8,7 +8,7 @@ int write_start(const char* filename) {
 
 	// Error handling
 	if (!out) {
-		fprintf(stderr, "Input Error: Cannot find %s\n", filename);
+		fprintf(stderr, "Input Error: Cannot find '%s'\n", filename);
 
 		// Failure
 		return 0;
@@ -30,7 +30,7 @@ int write_exit(const char* filename, const char* num) {
 
 	// Error handling
 	if (!out) {
-		fprintf(stderr, "Input Error: Cannot find %s\n", filename);
+		fprintf(stderr, "Input Error: Cannot find '%s'\n", filename);
 
 		// Failure
 		return 0;
@@ -52,7 +52,7 @@ int write_exit_from_stack(const char* filename, size_t* out_size) {
 
 	// Error handling
 	if (!out) {
-		fprintf(stderr, "Input Error: Cannot find %s\n", filename);
+		fprintf(stderr, "Input Error: Cannot find '%s'\n", filename);
 
 		// Failure
 		return 0;
@@ -76,7 +76,7 @@ int write_push(const char* filename, const char* reg, size_t* out_size) {
 
 	// Error handling
 	if (!out) {
-		fprintf(stderr, "Input Error: Cannot find %s\n", filename);
+		fprintf(stderr, "Input Error: Cannot find '%s'\n", filename);
 
 		// Failure
 		return 0;
@@ -101,7 +101,7 @@ int write_pop(const char* filename, const char* reg, size_t* out_size) {
 
 	// Error handling
 	if (!out) {
-		fprintf(stderr, "Input Error: Cannot find %s\n", filename);
+		fprintf(stderr, "Input Error: Cannot find '%s'\n", filename);
 
 		// Failure
 		return 0;
