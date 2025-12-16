@@ -10,7 +10,7 @@ The OOC compiler can be built with `make` if the following prerequisites are ins
 
 ## Usage
 
-The command `./ooc <filepath.oc>` will turn `<filepath.oc>` into a runnable executable.
+The command `./ooc path/file.oc` will turn `file.oc` into a runnable executable.
 
 The command can be run with the following options:
 
