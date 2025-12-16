@@ -22,13 +22,13 @@ ExprType set_expr_type(Token token) {
 				return expr_idnt;
 			default:
 				// If token does not have a valid type, should be impossible
-				fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
+				fprintf(stderr, "Parsing Error: Unexpected token '%s'\n", token.value);
 				exit(EXIT_FAILURE);
 		}
 	}
 
 	// If token does not have a valid type, should be impossible
-	fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
+	fprintf(stderr, "Parsing Error: Unexpected token '%s'\n", token.value);
 	exit(EXIT_FAILURE);
 }
 
@@ -37,6 +37,13 @@ NodeExpr expr_create(Token token) {
 	expr.type = set_expr_type(token);
 	expr.token = token;
 	return expr;
+}
+
+BinExpr bin_expr_create() {
+	BinExpr bin_expr;
+	bin_expr.var.add.is_primary = false;
+	bin_expr.var.mult.is_primary = false;
+	return bin_expr;
 }
 
 NodeStmtExit exit_create(NodeExpr expr) {
@@ -76,12 +83,12 @@ StmtType set_stmt_type(Token token) {
 			return stmt_type;
 		default:
 			// If token does not have a valid type, should be impossible
-			fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
+			fprintf(stderr, "Parsing Error: Unexpected token '%s'\n", token.value);
 			exit(EXIT_FAILURE);
 	}
 
 	// If token does not have a valid type, should be impossible
-	fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
+	fprintf(stderr, "Parsing Error: Unexpected token '%s'\n", token.value);
 	exit(EXIT_FAILURE);
 }
 
@@ -113,7 +120,7 @@ NodeStmt stmt_create(Token token, NodeExpr expr) {
 			break;
 		default:
 			// If token does not have a valid type, should be impossible
-			fprintf(stderr, "Parsing Error: Unexpected token %s\n", token.value);
+			fprintf(stderr, "Parsing Error: Unexpected token '%s'\n", token.value);
 			exit(EXIT_FAILURE);
 	}
 
@@ -204,7 +211,7 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 			// Parse expression and pass to type statement
 			*out_stmt = stmt_create_dec(idnt, *out_expr);
 		} else {
-			fprintf(stderr, "Parsing Error: Invalid expression %s\n", out_expr->token.value);
+			fprintf(stderr, "Parsing Error: Invalid expression '%s'\n", out_expr->token.value);
 			exit(EXIT_FAILURE);
 		}
 		if (token_peek(stack, curr_token) && curr_token->type == _semi) {
@@ -213,6 +220,9 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 			fprintf(stderr, "Parsing Error: Expected ';' after statement\n");
 			exit(EXIT_FAILURE);
 		}
+	} else if (curr_token->type == _idnt || curr_token->type == _eq) {
+		fprintf(stderr, "Parsing Error: Unexpected token '%s'\n", curr_token->value);
+		exit(EXIT_FAILURE);
 	}
 	return 1; // success
 }
