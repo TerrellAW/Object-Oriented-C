@@ -150,8 +150,11 @@ int parse_stmt(TokenStack* stack, Token* curr_token, Token* ahd_token, NodeExpr*
 	Token stmt_keyword = *curr_token;
 
 	// Exit statement
-	if (curr_token->type == _exit && token_peekAhead(stack, 1, ahd_token)
-			&& ahd_token->type == _oparen) { // Exit node
+	if (curr_token->type == _exit && token_peekAhead(stack, 1, ahd_token)) { // Exit node
+		if (ahd_token->type != _oparen) {
+			fprintf(stderr, "Parsing Error: Expected '(' before expression\n");
+			exit(EXIT_FAILURE);
+		}
 		token_consume(stack, curr_token); // Consume exit
 		token_consume(stack, curr_token); // Consume open paren
 		if (parse_expr(stack, curr_token, out_expr)) {
