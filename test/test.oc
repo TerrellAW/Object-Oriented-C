@@ -1,5 +1,4 @@
-int success = 0;
-int execute = 66;
 int order = 66;
-int life = 42;
-exit(success);
+int execute = order;
+int code = execute;
+exit (code);
