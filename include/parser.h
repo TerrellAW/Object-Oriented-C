@@ -3,6 +3,8 @@
 #define PARSER_H
 
 #include <stdio.h>
+#include <stdbool.h>
+
 #include "tokenizer.h"
 
 /**
@@ -18,7 +20,8 @@ typedef struct {
  */
 typedef enum {
 	expr_int,
-	expr_idnt
+	expr_idnt,
+	expr_bin
 } ExprType;
 
 /**
@@ -31,6 +34,35 @@ typedef struct {
 	// Token
 	Token token;
 } NodeExpr;
+
+/**
+ * @brief Addition binary tree node.
+ */
+typedef struct {
+	NodeExpr left;
+	NodeExpr right;
+	bool is_primary;
+} Add;
+
+/**
+ * @brief Multiplication binary tree node.
+ */
+typedef struct {
+	NodeExpr left;
+	NodeExpr right;
+	bool is_primary;
+} Mult;
+
+/**
+ * @brief Node for binary expressions.
+ */
+typedef struct {
+	// Union of binary epxression types
+	union {
+		Add add;
+		Mult mult;
+	} var;
+} BinExpr;
 
 /**
  * @brief Enumerates the possible types of statements.
@@ -94,6 +126,11 @@ ExprType set_expr_type(Token token);
  * @brief Constructs expression node.
  */
 NodeExpr expr_create(Token token);
+
+/**
+ * @brief Constructs a null binary expression node.
+ */
+BinExpr bin_expr_create();
 
 /**
  * @brief Constructs an exit statement node.
