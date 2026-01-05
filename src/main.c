@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 		fprintf(stderr, "Usage:\n");
 		fprintf(stderr, "ooc <path/input.oc> [options]\n");
 		fprintf(stderr, "\nThe following options are available:\n");
-		fprintf(stderr, "--asm or -a : Output a human readable assembly file, can specify path\n");
+		fprintf(stderr, "--asm or -a : Output a human readable assembly file, can specify path/filename\n");
 		fprintf(stderr, "--out or -o : Specify an output path/filename for the executable\n");
 
 		exit(EXIT_FAILURE);
