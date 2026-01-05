@@ -19,7 +19,7 @@ BIN = $(BIN_DIR)/ooc
 .PHONY: all test clean
 
 # Default target
-all: $(BIN)
+all: $(BIN) test
 
 # Link object files into final binary
 $(BIN): $(OBJ)
