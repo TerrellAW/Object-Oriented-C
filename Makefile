@@ -38,5 +38,5 @@ test:
 
 # Clean build artifacts via CLI parameter
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR) compile_commands.json
 	rm -rf TestBin

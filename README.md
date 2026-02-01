@@ -8,6 +8,8 @@ The OOC compiler can be built with `make` if the following prerequisites are ins
 
 - binutils
 
+If bear is installed one can generate a Clangd configuration file in their build with `bear -- make` instead.
+
 ## Usage
 
 The command `./ooc path/file.oc` will turn `file.oc` into a runnable executable.
