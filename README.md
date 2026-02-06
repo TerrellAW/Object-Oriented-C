@@ -22,6 +22,10 @@ The command can be run with the following options:
 
 By default the compiler will output the object and executable file to the current directory.
 
+## Syntax
+
+To view information on OOC's syntax, go [here](doc/SYNTAX.md).
+
 ## References
 
 Followed along with this [YouTube series](https://youtube.com/playlist?list=PLUDlas_Zy_qC7c5tCgTMYq2idyyT241qs&si=Pxv7xFqu3rYnc1m-).
